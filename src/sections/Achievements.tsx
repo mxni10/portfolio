@@ -28,30 +28,30 @@ export function Achievements() {
               <div className="h-4 w-2/3 animate-pulse rounded bg-white/5" />
             </div>
           ) : (
-            achievements.map((item) => (
-              <div
-                key={item.id}
-                className="grid items-start gap-4 py-8 md:grid-cols-12 md:items-center"
-              >
-                <p className="text-sm tracking-[0.16em] text-mute uppercase md:col-span-2">
-                  {item.date}
-                </p>
-                <div className="space-y-1 md:col-span-7">
-                  <div className="flex items-center gap-2">
-                    <Trophy size={16} className="text-accent" />
-                    <h3 className="font-display text-2xl italic text-paper md:text-3xl">
-                      {item.title}
-                    </h3>
+            achievements.map((item, idx) => (
+              <Reveal key={item.id} delay={idx * 0.06}>
+                <div className="grid items-start gap-4 py-8 md:grid-cols-12 md:items-center">
+                  <p className="text-sm tracking-[0.16em] text-mute uppercase md:col-span-2">
+                    {item.date}
+                  </p>
+                  <div className="space-y-1 md:col-span-7">
+                    <div className="flex items-center gap-2">
+                      <Trophy size={16} className="text-accent" />
+                      <h3 className="font-display text-2xl italic text-paper md:text-3xl">
+                        {item.title}
+                      </h3>
+                    </div>
+                    <p className="text-sm text-mute leading-relaxed">{item.description}</p>
                   </div>
-                  <p className="text-sm text-mute leading-relaxed">{item.description}</p>
+                  <div className="md:col-span-3 md:text-right">
+                    <span className="inline-block rounded-full border border-line px-3 py-1 text-[11px] tracking-[0.16em] text-mute uppercase">
+                      Milestone
+                    </span>
+                  </div>
                 </div>
-                <div className="md:col-span-3 md:text-right">
-                  <span className="inline-block rounded-full border border-line px-3 py-1 text-[11px] tracking-[0.16em] text-mute uppercase">
-                    Verified
-                  </span>
-                </div>
-              </div>
+              </Reveal>
             ))
+
           )}
         </div>
       </div>

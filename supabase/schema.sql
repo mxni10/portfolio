@@ -171,9 +171,11 @@ VALUES
   ('AI-assisted Development Tools', 6)
 ON CONFLICT DO NOTHING;
 
--- Seed Sample Achievements (You can edit or add more in Supabase Table Editor)
+-- Seed Sample Achievements (Explicitly marked as placeholders — replace with your actual achievements in Supabase)
+-- If you do not wish to display sample achievements, you can remove these rows in Supabase Table Editor.
 INSERT INTO public.achievements (title, description, date, display_order)
 VALUES
-  ('Hackathon Finalist', 'Built a real-time collaborative tool with relational persistence during a 36-hour hackathon.', '2025', 1),
-  ('Dean''s Honor List', 'Maintained academic excellence across core engineering courses including Data Structures and DBMS.', '2024 — 2025', 2)
+  ('[Sample] Hackathon Participation', 'Placeholder milestone — replace this entry with your actual hackathon, competition, or college achievement in the Supabase Table Editor.', '2025', 1),
+  ('[Sample] Academic Recognition', 'Placeholder milestone — replace this entry with your actual academic milestone or certification in the Supabase Table Editor.', '2024 — 2025', 2)
 ON CONFLICT DO NOTHING;
+
