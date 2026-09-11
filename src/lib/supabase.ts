@@ -1,7 +1,10 @@
 import { createClient } from '@supabase/supabase-js'
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL as string | undefined
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY as string | undefined
+const rawUrl = import.meta.env.VITE_SUPABASE_URL as string | undefined
+const supabaseUrl = rawUrl
+  ? rawUrl.trim().replace(/\/rest\/v1\/?$/, '').replace(/\/+$/, '')
+  : undefined
+const supabaseAnonKey = (import.meta.env.VITE_SUPABASE_ANON_KEY as string | undefined)?.trim()
 
 export const isSupabaseConfigured = Boolean(
   supabaseUrl &&
@@ -14,6 +17,7 @@ export const isSupabaseConfigured = Boolean(
 export const supabase = isSupabaseConfigured
   ? createClient(supabaseUrl!, supabaseAnonKey!)
   : null
+
 
 export type DbProject = {
   id: string
