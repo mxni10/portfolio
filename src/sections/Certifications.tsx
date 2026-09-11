@@ -1,9 +1,11 @@
 import { ArrowUpRight } from 'lucide-react'
-import { certifications } from '../data/content'
 import { Reveal } from '../components/Reveal'
 import { SectionLabel } from '../components/SectionLabel'
+import { useCertifications } from '../hooks/useSupabaseData'
 
 export function Certifications() {
+  const { certifications, loading } = useCertifications()
+
   return (
     <section id="certifications" className="px-6 py-24 md:px-10 md:py-32">
       <div className="mx-auto max-w-6xl">
@@ -15,7 +17,12 @@ export function Certifications() {
         </Reveal>
 
         <div className="mt-12 divide-y divide-line border-y border-line">
-          {certifications.length ? (
+          {loading ? (
+            <div className="space-y-4 py-6">
+              <div className="h-6 w-full animate-pulse rounded bg-white/5" />
+              <div className="h-6 w-3/4 animate-pulse rounded bg-white/5" />
+            </div>
+          ) : certifications.length ? (
             certifications.map((item) => (
               <div
                 key={item.name}
@@ -42,8 +49,9 @@ export function Certifications() {
             ))
           ) : (
             <p className="py-8 text-sm text-mute">
-              Add certificates in <code className="text-accent">src/data/content.ts</code>.
-              This section stays honest until then.
+              Add certificates directly in your Supabase{' '}
+              <code className="text-accent">certifications</code> table or in{' '}
+              <code className="text-accent">src/data/content.ts</code>.
             </p>
           )}
         </div>

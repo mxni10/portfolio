@@ -1,11 +1,23 @@
 import { ArrowLeft, ArrowUpRight } from 'lucide-react'
 import { Link, Navigate, useParams } from 'react-router-dom'
 import { ProjectVisual } from '../components/ProjectVisual'
-import { projects } from '../data/content'
+import { useProject } from '../hooks/useSupabaseData'
 
 export function ProjectCase() {
   const { slug } = useParams()
-  const project = projects.find((item) => item.slug === slug)
+  const { project, loading } = useProject(slug)
+
+  if (loading) {
+    return (
+      <main className="px-6 pt-28 pb-24 md:px-10">
+        <div className="mx-auto max-w-5xl space-y-6">
+          <div className="h-4 w-20 animate-pulse rounded bg-white/10" />
+          <div className="h-14 w-3/4 animate-pulse rounded bg-white/10" />
+          <div className="aspect-[16/10] animate-pulse rounded-[1.4rem] bg-white/5" />
+        </div>
+      </main>
+    )
+  }
 
   if (!project) {
     return <Navigate to="/" replace />

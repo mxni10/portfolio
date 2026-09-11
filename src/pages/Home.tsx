@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 import { About } from '../sections/About'
+import { Achievements } from '../sections/Achievements'
 import { Certifications } from '../sections/Certifications'
 import { Contact } from '../sections/Contact'
 import { Education } from '../sections/Education'
@@ -26,6 +27,7 @@ export function Home() {
       <Skills />
       <Education />
       <Certifications />
+      <Achievements />
       <Learning />
       <Contact />
     </main>
