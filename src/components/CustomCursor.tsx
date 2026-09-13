@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import { useIsTouch } from '../hooks/useIsTouch'
 import { usePrefersReducedMotion } from '../hooks/usePrefersReducedMotion'
 
-type CursorState = 'default' | 'link' | 'view'
+type CursorState = 'default' | 'link' | 'view' | 'explore'
 
 export function CustomCursor() {
   const touch = useIsTouch()
@@ -31,6 +31,7 @@ export function CustomCursor() {
       const target = event.target as HTMLElement | null
       if (!target) return
       if (target.closest('[data-cursor="view"]')) setState('view')
+      else if (target.closest('[data-cursor="explore"]')) setState('explore')
       else if (target.closest('a, button, [data-cursor="link"]')) setState('link')
       else setState('default')
     }
@@ -49,7 +50,7 @@ export function CustomCursor() {
 
   if (touch || reduced) return null
 
-  const size = state === 'view' ? 88 : state === 'link' ? 44 : 8
+  const size = state === 'view' ? 92 : state === 'explore' ? 76 : state === 'link' ? 48 : 8
 
   return (
     <motion.div
@@ -62,10 +63,10 @@ export function CustomCursor() {
         height: size,
         opacity: visible ? 1 : 0,
       }}
-      transition={{ type: 'spring', stiffness: 380, damping: 32, mass: 0.4 }}
+      transition={{ type: 'spring', stiffness: 450, damping: 36, mass: 0.35 }}
     >
-      <div className="flex h-full w-full items-center justify-center rounded-full border border-paper bg-paper/10 text-[10px] font-medium tracking-[0.22em] text-paper">
-        {state === 'view' ? 'VIEW' : null}
+      <div className="flex h-full w-full items-center justify-center rounded-full border border-paper bg-paper/10 text-[10px] font-medium tracking-[0.24em] text-paper backdrop-blur-[1px]">
+        {state === 'view' ? 'VIEW' : state === 'explore' ? 'EXPLORE' : null}
       </div>
     </motion.div>
   )

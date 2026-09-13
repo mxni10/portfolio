@@ -1,5 +1,6 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
+import { Sparkles } from 'lucide-react'
 import { Reveal } from '../components/Reveal'
 import { SectionLabel } from '../components/SectionLabel'
 import { useLearning } from '../hooks/useSupabaseData'
@@ -21,28 +22,31 @@ export function Learning() {
   const currentTopic = learning[index] || learning[0] || 'Modern Web Development'
 
   return (
-    <section id="learning" className="px-6 py-24 md:px-10 md:py-32">
+    <section id="learning" className="px-6 py-28 md:px-10 md:py-36">
       <div className="mx-auto max-w-6xl">
         <SectionLabel index="08" label="Currently exploring" />
+
         <Reveal>
-          <div className="flex flex-col gap-6 md:flex-row md:items-end">
-            <p className="text-[11px] tracking-[0.28em] text-mute uppercase">
-              Currently learning
+          <div className="mt-8 flex flex-col gap-6 md:flex-row md:items-end">
+            <p className="flex items-center gap-2 text-[11px] tracking-[0.28em] text-mute uppercase">
+              <Sparkles size={13} className="text-accent animate-pulse" />
+              <span>Currently exploring</span>
             </p>
-            <div className="relative h-16 overflow-hidden font-display text-4xl italic md:h-20 md:text-6xl">
+
+            <div className="relative h-16 w-full overflow-hidden font-display text-4xl italic md:h-20 md:text-6xl lg:text-7xl">
               {loading ? (
-                <div className="h-12 w-64 animate-pulse rounded bg-white/10" />
+                <div className="h-14 w-80 animate-pulse rounded bg-white/10" />
               ) : reduced ? (
-                <span>{currentTopic}</span>
+                <span className="text-accent">{currentTopic}</span>
               ) : (
                 <AnimatePresence mode="wait">
                   <motion.span
                     key={currentTopic}
-                    className="absolute inset-0 text-accent"
-                    initial={{ y: 28, opacity: 0 }}
+                    className="absolute inset-0 text-accent will-change-transform"
+                    initial={{ y: 36, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
-                    exit={{ y: -28, opacity: 0 }}
-                    transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+                    exit={{ y: -36, opacity: 0 }}
+                    transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
                   >
                     {currentTopic}
                   </motion.span>
@@ -51,11 +55,12 @@ export function Learning() {
             </div>
           </div>
         </Reveal>
-        <ul className="mt-12 flex flex-wrap gap-2">
+
+        <ul className="mt-14 flex flex-wrap gap-2.5">
           {learning.map((item) => (
             <li
               key={item}
-              className="rounded-full border border-line px-4 py-2 text-sm text-mute"
+              className="rounded-full border border-line bg-white/[0.02] px-4 py-2 text-xs font-medium tracking-wide text-paper/85 backdrop-blur-sm transition-all duration-300 hover:border-accent/50 hover:bg-accent/10 hover:text-accent"
             >
               {item}
             </li>

@@ -3,12 +3,14 @@ import { CustomCursor } from './components/CustomCursor'
 import { Footer } from './components/Footer'
 import { Navbar } from './components/Navbar'
 import { ScrollProgress } from './components/ScrollProgress'
+import { SmoothScroll } from './components/SmoothScroll'
 import { Home } from './pages/Home'
 import { ProjectCase } from './pages/ProjectCase'
 
 export default function App() {
   return (
     <BrowserRouter>
+      <SmoothScroll />
       <div className="grain" aria-hidden />
       <ScrollProgress />
       <CustomCursor />
