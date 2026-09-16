@@ -218,23 +218,25 @@ export function Contact() {
                 </div>
               ) : null}
 
-              <button
-                type="submit"
-                disabled={status === 'submitting'}
-                className="group inline-flex w-full items-center justify-center gap-3 rounded-full border border-line bg-paper px-8 py-3.5 text-[12px] font-medium tracking-[0.2em] text-ink uppercase transition-all duration-300 hover:border-accent hover:bg-accent hover:shadow-[0_0_30px_rgba(228,199,160,0.3)] disabled:opacity-50 sm:w-auto"
-              >
-                {status === 'submitting' ? (
-                  <>
-                    <Loader2 size={16} className="animate-spin" />
-                    Sending...
-                  </>
-                ) : (
-                  <>
-                    <span>Send Message</span>
-                    <Send size={14} className="transition-transform duration-300 group-hover:translate-x-1" />
-                  </>
-                )}
-              </button>
+              <Magnetic>
+                <button
+                  type="submit"
+                  disabled={status === 'submitting'}
+                  className="group inline-flex w-full items-center justify-center gap-3 rounded-full border border-line bg-paper px-8 py-3.5 text-[12px] font-medium tracking-[0.2em] text-ink uppercase transition-all duration-300 hover:scale-[1.03] hover:border-accent hover:bg-accent hover:shadow-[0_0_30px_rgba(228,199,160,0.3)] active:scale-[0.98] disabled:opacity-50 sm:w-auto"
+                >
+                  {status === 'submitting' ? (
+                    <>
+                      <Loader2 size={16} className="animate-spin" />
+                      Sending...
+                    </>
+                  ) : (
+                    <>
+                      <span>Send Message</span>
+                      <Send size={14} className="transition-transform duration-300 group-hover:translate-x-1" />
+                    </>
+                  )}
+                </button>
+              </Magnetic>
             </form>
           </div>
         </div>

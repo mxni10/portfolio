@@ -50,7 +50,7 @@ export function CustomCursor() {
 
   if (touch || reduced) return null
 
-  const size = state === 'view' ? 92 : state === 'explore' ? 76 : state === 'link' ? 48 : 8
+  const size = state === 'view' ? 88 : state === 'explore' ? 80 : state === 'link' ? 44 : 9
 
   return (
     <motion.div
@@ -63,9 +63,17 @@ export function CustomCursor() {
         height: size,
         opacity: visible ? 1 : 0,
       }}
-      transition={{ type: 'spring', stiffness: 450, damping: 36, mass: 0.35 }}
+      transition={{ type: 'spring', stiffness: 500, damping: 38, mass: 0.28 }}
     >
-      <div className="flex h-full w-full items-center justify-center rounded-full border border-paper bg-paper/10 text-[10px] font-medium tracking-[0.24em] text-paper backdrop-blur-[1px]">
+      <div
+        className={`flex h-full w-full items-center justify-center rounded-full transition-colors duration-200 ${
+          state === 'default'
+            ? 'bg-paper shadow-[0_0_8px_rgba(255,255,255,0.8)]'
+            : state === 'link'
+            ? 'border border-paper/60 bg-paper/10'
+            : 'border border-accent/80 bg-accent/20 text-[10px] font-mono font-medium tracking-[0.24em] text-paper backdrop-blur-[2px]'
+        }`}
+      >
         {state === 'view' ? 'VIEW' : state === 'explore' ? 'EXPLORE' : null}
       </div>
     </motion.div>

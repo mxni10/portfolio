@@ -1,5 +1,5 @@
-import { Reveal } from '../components/Reveal'
 import { SectionLabel } from '../components/SectionLabel'
+import { TitleReveal } from '../components/TitleReveal'
 import { CinematicProjectCard } from '../components/CinematicProjectCard'
 import { useProjects } from '../hooks/useSupabaseData'
 
@@ -13,11 +13,11 @@ export function Projects() {
 
       <div className="relative mx-auto max-w-6xl">
         <SectionLabel index="03" label="Selected work" />
-        <Reveal>
+        <TitleReveal>
           <h2 className="max-w-4xl font-display text-4xl italic leading-[1.05] text-paper sm:text-5xl md:text-7xl">
             Projects as products — problem, system, result.
           </h2>
-        </Reveal>
+        </TitleReveal>
 
         <div className="mt-20 space-y-36 md:space-y-48">
           {loading ? (

@@ -39,7 +39,7 @@ export function ProjectCase() {
         <h1 className="mt-4 font-display text-5xl italic md:text-8xl">{project.name}</h1>
         <p className="mt-6 max-w-2xl text-lg text-mute">{project.tagline}</p>
 
-        <div className="mt-10">
+        <div className="mt-10" data-cursor="explore">
           <ProjectVisual
             accent={project.accent}
             title={project.name}
