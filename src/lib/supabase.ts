@@ -1,10 +1,16 @@
 import { createClient } from '@supabase/supabase-js'
 
-const rawUrl = import.meta.env.VITE_SUPABASE_URL as string | undefined
+const rawUrl =
+  (import.meta.env.VITE_SUPABASE_URL as string | undefined) ||
+  'https://krzugxpqhijmrqpaovhh.supabase.co'
+
 const supabaseUrl = rawUrl
   ? rawUrl.trim().replace(/\/rest\/v1\/?$/, '').replace(/\/+$/, '')
   : undefined
-const supabaseAnonKey = (import.meta.env.VITE_SUPABASE_ANON_KEY as string | undefined)?.trim()
+
+const supabaseAnonKey =
+  ((import.meta.env.VITE_SUPABASE_ANON_KEY as string | undefined) ||
+    'sb_publishable_HDGsNy03zjpuUhpO4Kul1Q_Ntqc9GYC')?.trim()
 
 export const isSupabaseConfigured = Boolean(
   supabaseUrl &&
