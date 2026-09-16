@@ -7,7 +7,7 @@
   --color-paper: #f3efe6;
   --color-mute: #8f8a80;
   --color-accent: #e4c7a0;
-  --color-line: rgb(243 239 230 / 12%);
+  --color-line: rgba(243, 239, 230, 0.12);
 }
 
 html,
@@ -77,6 +77,7 @@ body {
   from {
     transform: translateX(0);
   }
+
   to {
     transform: translateX(-50%);
   }
