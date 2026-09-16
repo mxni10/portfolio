@@ -146,6 +146,7 @@ export function CinematicProjectCard({ project, index }: Props) {
                 accent={project.accent}
                 title={project.name}
                 index={project.index}
+                imageUrl={project.imageUrl}
               />
             </div>
           </div>

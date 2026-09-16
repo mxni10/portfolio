@@ -4,9 +4,30 @@ type Props = {
   accent?: string
   title: string
   index: string
+  imageUrl?: string
 }
 
-export function ProjectVisual({ accent = '#e4c7a0', title, index }: Props) {
+export function ProjectVisual({ accent = '#e4c7a0', title, index, imageUrl }: Props) {
+  if (imageUrl) {
+    return (
+      <div
+        className="relative aspect-[16/10] w-full overflow-hidden rounded-[1.6rem] border border-line bg-[#0e0e11] shadow-2xl transition-all duration-700"
+        aria-hidden
+      >
+        <img
+          src={imageUrl}
+          alt={title}
+          className="h-full w-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+        <div className="absolute bottom-4 left-6 right-6 flex items-center justify-between font-mono text-[10px] text-mute">
+          <span className="text-paper">{title}</span>
+          <span className="text-accent">REF #{index}</span>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div
       className="relative aspect-[16/10] w-full overflow-hidden rounded-[1.6rem] border border-line bg-[#0e0e11] shadow-2xl transition-all duration-700"
@@ -22,6 +43,7 @@ export function ProjectVisual({ accent = '#e4c7a0', title, index }: Props) {
 
       {/* Grid texture */}
       <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,rgba(243,239,230,0.02)_1px,transparent_1px),linear-gradient(to_bottom,rgba(243,239,230,0.02)_1px,transparent_1px)] [background-size:32px_32px]" />
+
 
       {/* Terminal / Architectural Dashboard Container */}
       <div className="relative flex h-full flex-col justify-between p-6 md:p-8">

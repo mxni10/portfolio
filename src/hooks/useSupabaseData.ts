@@ -28,6 +28,7 @@ function mapDbProjectToProject(row: DbProject, indexNumber: number): Project {
     github: row.github_url || 'https://github.com/mxni10',
     live: row.live_url || '',
     accent: row.accent || '#e4c7a0',
+    imageUrl: row.image_url || '',
     blocks: [
       {
         id: 'overview',

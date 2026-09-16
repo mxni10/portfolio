@@ -86,6 +86,7 @@ export type Project = {
   github: string
   live: string
   accent: string
+  imageUrl?: string
   blocks: CaseBlock[]
 }
 

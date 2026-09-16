@@ -41,21 +41,23 @@ export function Contact() {
         ])
 
         if (error) throw error
+
+        setStatus('success')
+        setName('')
+        setEmail('')
+        setMessage('')
+        setTimeout(() => setStatus('idle'), 6000)
       } else {
-        // Fallback simulation when Supabase credentials are not yet configured
-        await new Promise((resolve) => setTimeout(resolve, 800))
-        console.info('Contact message submitted (mock/fallback mode):', {
-          name,
-          email,
-          message,
-        })
+        console.error(
+          'CRITICAL: Supabase is unconfigured or offline. Contact message was not saved to database.'
+        )
+        throw new Error(
+          profile.email
+            ? `Database is currently unreachable. Please send your message directly to ${profile.email} to ensure it is received.`
+            : 'Database is currently unreachable. Please reach out via GitHub or LinkedIn directly.'
+        )
       }
 
-      setStatus('success')
-      setName('')
-      setEmail('')
-      setMessage('')
-      setTimeout(() => setStatus('idle'), 6000)
     } catch (err: unknown) {
       console.error('Contact form submission error:', err)
       setStatus('error')

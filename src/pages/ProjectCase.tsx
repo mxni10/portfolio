@@ -40,7 +40,12 @@ export function ProjectCase() {
         <p className="mt-6 max-w-2xl text-lg text-mute">{project.tagline}</p>
 
         <div className="mt-10">
-          <ProjectVisual accent={project.accent} title={project.name} index={project.index} />
+          <ProjectVisual
+            accent={project.accent}
+            title={project.name}
+            index={project.index}
+            imageUrl={project.imageUrl}
+          />
         </div>
 
         <dl className="mt-10 grid gap-6 border-y border-line py-8 sm:grid-cols-3">
