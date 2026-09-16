@@ -22,8 +22,11 @@ export function Learning() {
   const currentTopic = learning[index] || learning[0] || 'Modern Web Development'
 
   return (
-    <section id="learning" className="px-6 py-28 md:px-10 md:py-36">
-      <div className="mx-auto max-w-6xl">
+    <section id="learning" className="relative px-6 py-28 md:px-10 md:py-36">
+      {/* Connected atmospheric layer */}
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_30%_60%,rgba(228,199,160,0.025),transparent)]" />
+
+      <div className="relative mx-auto max-w-6xl">
         <SectionLabel index="08" label="Currently exploring" />
 
         <Reveal>

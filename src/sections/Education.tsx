@@ -1,6 +1,7 @@
 import { education } from '../data/content'
 import { Reveal } from '../components/Reveal'
 import { SectionLabel } from '../components/SectionLabel'
+import { TitleReveal } from '../components/TitleReveal'
 
 export function Education() {
   const details = [
@@ -11,8 +12,11 @@ export function Education() {
   ].filter((item): item is { label: string; value: string } => Boolean(item))
 
   return (
-    <section id="education" className="px-6 py-28 md:px-10 md:py-36">
-      <div className="mx-auto max-w-6xl">
+    <section id="education" className="relative px-6 py-28 md:px-10 md:py-36">
+      {/* Connected atmospheric layer */}
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_30%,rgba(228,199,160,0.025),transparent_60%)]" />
+
+      <div className="relative mx-auto max-w-6xl">
         <SectionLabel index="05" label="Education" />
 
         <Reveal>
@@ -25,9 +29,11 @@ export function Education() {
               </div>
 
               <div className="lg:col-span-9">
-                <h2 className="font-display text-4xl italic text-paper sm:text-5xl md:text-6xl">
-                  {education.degree}
-                </h2>
+                <TitleReveal>
+                  <h2 className="font-display text-4xl italic text-paper sm:text-5xl md:text-6xl">
+                    {education.degree}
+                  </h2>
+                </TitleReveal>
                 <p className="mt-3 text-base text-mute">{education.yearLabel}</p>
 
                 {details.length ? (

@@ -1,6 +1,7 @@
 import { skillGroups } from '../data/content'
 import { Reveal } from '../components/Reveal'
 import { SectionLabel } from '../components/SectionLabel'
+import { TitleReveal } from '../components/TitleReveal'
 
 export function Skills() {
   const loop = [
@@ -9,15 +10,18 @@ export function Skills() {
   ]
 
   return (
-    <section id="skills" className="py-28 md:py-36">
-      <div className="px-6 md:px-10">
+    <section id="skills" className="relative py-28 md:py-36">
+      {/* Connected atmospheric layer */}
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_50%_0%,rgba(228,199,160,0.03),transparent)]" />
+
+      <div className="relative px-6 md:px-10">
         <div className="mx-auto max-w-6xl">
           <SectionLabel index="04" label="Tech stack" />
-          <Reveal>
+          <TitleReveal>
             <h2 className="max-w-3xl font-display text-4xl italic leading-tight text-paper md:text-6xl">
               Tools I actually use — not a percentage chart.
             </h2>
-          </Reveal>
+          </TitleReveal>
         </div>
       </div>
 

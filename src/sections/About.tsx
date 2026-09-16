@@ -45,9 +45,12 @@ export function About() {
     <section
       ref={containerRef}
       id="about"
-      className="relative px-6 py-28 md:px-10 md:py-36"
+      className="relative overflow-hidden px-6 py-28 md:px-10 md:py-36"
     >
-      <div className="mx-auto max-w-6xl">
+      {/* Seamless transition bleed from Hero */}
+      <div className="pointer-events-none absolute -top-24 left-1/2 h-64 w-3/4 -translate-x-1/2 rounded-full bg-[radial-gradient(ellipse_at_center,rgba(228,199,160,0.04),transparent_70%)] blur-[80px]" />
+
+      <div className="relative mx-auto max-w-6xl">
         <SectionLabel index="02" label="About" />
 
         <div className="mt-8 grid gap-16 lg:grid-cols-12 lg:gap-12">

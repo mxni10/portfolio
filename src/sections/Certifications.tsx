@@ -1,20 +1,24 @@
 import { ArrowUpRight } from 'lucide-react'
 import { Reveal } from '../components/Reveal'
 import { SectionLabel } from '../components/SectionLabel'
+import { TitleReveal } from '../components/TitleReveal'
 import { useCertifications } from '../hooks/useSupabaseData'
 
 export function Certifications() {
   const { certifications, loading } = useCertifications()
 
   return (
-    <section id="certifications" className="px-6 py-28 md:px-10 md:py-36">
-      <div className="mx-auto max-w-6xl">
+    <section id="certifications" className="relative px-6 py-28 md:px-10 md:py-36">
+      {/* Connected atmospheric layer */}
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_70%_40%_at_50%_100%,rgba(228,199,160,0.025),transparent)]" />
+
+      <div className="relative mx-auto max-w-6xl">
         <SectionLabel index="06" label="Certifications" />
-        <Reveal>
+        <TitleReveal>
           <h2 className="font-display text-4xl italic text-paper sm:text-5xl md:text-6xl">
             Proof of learning, listed without noise.
           </h2>
-        </Reveal>
+        </TitleReveal>
 
         <div className="mt-14 divide-y divide-line/60 border-y border-line/60">
           {loading ? (

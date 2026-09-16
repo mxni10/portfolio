@@ -2,6 +2,7 @@ import { ArrowUpRight, Check, Copy, Loader2, Send } from 'lucide-react'
 import { useState } from 'react'
 import { Magnetic } from '../components/Magnetic'
 import { Reveal } from '../components/Reveal'
+import { TitleReveal } from '../components/TitleReveal'
 import { profile } from '../data/content'
 import { supabase, isSupabaseConfigured } from '../lib/supabase'
 
@@ -68,16 +69,21 @@ export function Contact() {
   }
 
   return (
-    <section id="contact" className="relative px-6 py-28 md:px-10 md:py-40">
-      <div className="mx-auto max-w-6xl">
+    <section id="contact" className="relative overflow-hidden px-6 py-28 md:px-10 md:py-40">
+      {/* Connected atmospheric layer */}
+      <div className="pointer-events-none absolute -bottom-20 -left-20 h-[500px] w-[500px] rounded-full bg-[radial-gradient(circle,rgba(228,199,160,0.08)_0%,transparent_70%)] blur-[100px]" />
+
+      <div className="relative mx-auto max-w-6xl">
         <Reveal>
           <p className="text-[11px] tracking-[0.28em] text-mute uppercase">09 — Contact</p>
-          <h2 className="mt-6 max-w-4xl font-display text-5xl leading-[0.95] italic text-paper sm:text-7xl md:text-8xl lg:text-9xl">
+        </Reveal>
+        <TitleReveal className="mt-6">
+          <h2 className="max-w-4xl font-display text-5xl leading-[0.95] italic text-paper sm:text-7xl md:text-8xl lg:text-9xl">
             Have an idea?
             <br />
             Let’s build something.
           </h2>
-        </Reveal>
+        </TitleReveal>
 
         <div className="mt-20 grid gap-12 lg:grid-cols-12 lg:gap-16">
           {/* Left Column: Direct Links & Info */}
