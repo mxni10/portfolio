@@ -78,7 +78,7 @@ export function Contact() {
           <p className="text-[11px] tracking-[0.28em] text-mute uppercase">09 — Contact</p>
         </Reveal>
         <TitleReveal className="mt-6">
-          <h2 className="max-w-4xl font-display text-5xl leading-[0.95] italic text-paper sm:text-7xl md:text-8xl lg:text-9xl">
+          <h2 className="max-w-4xl font-display text-4xl leading-[0.95] italic text-paper sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl">
             Have an idea?
             <br />
             Let’s build something.

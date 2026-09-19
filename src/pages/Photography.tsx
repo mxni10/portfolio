@@ -70,8 +70,8 @@ function HeroPhoto({ photo, colSpan, index }: HeroPhotoProps) {
         className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
         style={{ opacity: loaded ? 1 : 0 }}
       />
-      {/* hover caption overlay — slides up from bottom */}
-      <div className="absolute bottom-0 left-0 right-0 translate-y-2 p-3 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
+      {/* hover caption overlay — always visible on mobile, hover-only on desktop */}
+      <div className="absolute bottom-0 left-0 right-0 p-3 translate-y-0 opacity-100 md:translate-y-2 md:opacity-0 md:transition-all md:duration-300 md:group-hover:translate-y-0 md:group-hover:opacity-100">
         <div className="rounded-sm px-3 py-2 backdrop-blur-md" style={{ background: 'rgba(15,20,16,0.75)' }}>
           <p className="font-serif text-[11px] italic text-phot-cream/90 leading-snug">{photo.alt}</p>
           {photo.location && (
@@ -86,14 +86,7 @@ function HeroPhoto({ photo, colSpan, index }: HeroPhotoProps) {
   )
 }
 
-// 3 equal columns, uniform height via aspect-ratio: 16/10 on each card.
-const HERO_LAYOUT = [
-  { colSpan: 1 }, // left
-  { colSpan: 1 }, // middle
-  { colSpan: 1 }, // right
-  { colSpan: 1 }, // 4th (if used)
-  { colSpan: 1 }, // 5th (if used)
-]
+
 
 // ─── Accordion masonry gallery ───────────────────────────────────────────────
 // Uses CSS `columns` (masonry-style) so images sit at their NATURAL dimensions.
@@ -183,7 +176,7 @@ function AccordionCategory({ cat, photoList, defaultOpen = false }: AccordionCat
               Portrait photos naturally take more vertical space; landscape photos less.
               No cropping, no forced boxes. Gap is handled by mb-3 on each item.
             */}
-            <div className="columns-2 gap-3 pb-8 sm:columns-3 md:columns-4">
+            <div className="columns-1 gap-3 pb-8 sm:columns-2 md:columns-3 lg:columns-4">
               {photoList.map((photo, i) => (
                 <MasonryPhoto key={photo.id} photo={photo} index={i} />
               ))}
@@ -292,7 +285,7 @@ export function Photography() {
               initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-              className="font-serif text-[clamp(3.5rem,10vw,9rem)] leading-[0.92] tracking-tight text-phot-cream"
+              className="font-serif text-[clamp(2.5rem,10vw,9rem)] leading-[0.92] tracking-tight text-phot-cream"
             >
               Photo&shy;graphy
             </motion.h1>
@@ -307,22 +300,16 @@ export function Photography() {
             </motion.p>
           </div>
 
-          {/* 3-column equal grid — all cards same 16:10 height via aspect-ratio */}
-          <div
-            className="grid gap-3"
-            style={{ gridTemplateColumns: 'repeat(3, 1fr)' }}
-          >
-            {featuredPhotos.map((photo, i) => {
-              const layout = HERO_LAYOUT[i] ?? HERO_LAYOUT[0]
-              return (
-                <HeroPhoto
-                  key={photo.id}
-                  photo={photo}
-                  colSpan={layout.colSpan}
-                  index={i}
-                />
-              )
-            })}
+          {/* Responsive grid: 1 col mobile, 2 col sm, 3 col md */}
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3">
+            {featuredPhotos.map((photo, i) => (
+              <HeroPhoto
+                key={photo.id}
+                photo={photo}
+                colSpan={1}
+                index={i}
+              />
+            ))}
           </div>
         </div>
       </section>

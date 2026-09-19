@@ -19,7 +19,7 @@ export function Projects() {
           </h2>
         </TitleReveal>
 
-        <div className="mt-20 space-y-36 md:space-y-48">
+        <div className="mt-20 space-y-16 md:space-y-36 lg:space-y-48">
           {loading ? (
             <div className="grid items-center gap-10 lg:grid-cols-12">
               <div className="aspect-[16/10] animate-pulse rounded-[1.6rem] border border-line bg-white/[0.03] lg:col-span-7" />
