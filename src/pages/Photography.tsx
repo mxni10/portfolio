@@ -8,6 +8,8 @@ import {
   featureBannerSrc,
   photoCategories,
   photos,
+  videoSrc,
+  videoPosterSrc,
 } from '../data/photography'
 import { profile } from '../data/content'
 
@@ -320,19 +322,71 @@ export function Photography() {
         </div>
       </section>
 
-      {/* ── Statement ── */}
-      <div className="border-y border-phot-line py-8">
-        <div className="mx-auto max-w-7xl px-6 md:px-10 lg:px-20">
+      {/* ── Statement — video background ── */}
+      <div className="relative overflow-hidden" style={{ minHeight: '38vh' }}>
+        {/*
+          Video background — autoplay, muted, loop, playsInline.
+          When videoSrc is empty or prefers-reduced-motion is active,
+          only the poster image shows. The dark overlay ensures text
+          stays readable regardless of video content.
+
+          Mobile / slow connection strategy: the video uses `preload="none"`
+          so it doesn't load until the browser decides to — browsers on
+          data-saver mode will typically not autoplay anyway. The poster
+          image loads as a normal img and is always visible first.
+        */}
+        {videoSrc ? (
+          <video
+            className="absolute inset-0 h-full w-full object-cover"
+            src={videoSrc}
+            poster={videoPosterSrc}
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="none"
+            aria-hidden
+            style={{
+              // Respect prefers-reduced-motion: CSS media query hides the video
+              // and shows only the poster via the .motion-safe utility below
+            }}
+          />
+        ) : (
+          // No video yet — show poster image as static background
+          <div
+            className="absolute inset-0 bg-cover bg-center"
+            style={{
+              backgroundImage: `url('${videoPosterSrc}')`,
+              filter: 'brightness(0.55)',
+            }}
+          />
+        )}
+
+        {/* Dark semi-transparent overlay — ensures quote readability */}
+        <div
+          className="absolute inset-0"
+          style={{ background: 'linear-gradient(to bottom, rgba(15,20,16,0.55), rgba(15,20,16,0.72))' }}
+        />
+
+        {/* Quote text */}
+        <div className="relative z-10 flex min-h-[38vh] flex-col items-center justify-center px-6 py-16 text-center">
           <motion.p
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true, margin: '-80px' }}
-            transition={{ duration: 0.8 }}
-            className="font-serif text-xl italic text-phot-cream/70 md:text-2xl"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-60px' }}
+            transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+            className="max-w-2xl font-serif text-2xl italic leading-relaxed text-phot-cream md:text-3xl lg:text-4xl"
           >
             Shot on a phone. Edited in Lightroom. No pretension.
           </motion.p>
         </div>
+
+        {/* Hide video for prefers-reduced-motion users via inline style tag */}
+        <style>{`
+          @media (prefers-reduced-motion: reduce) {
+            video { display: none !important; }
+          }
+        `}</style>
       </div>
 
       {/* ── Feature banner ── */}

@@ -11,31 +11,27 @@
 //
 // HERO GRID (featured: true)
 //   Mark up to 5 photos as featured: true. They appear in the scattered
-//   asymmetric grid at the top of the page. The grid gives each one a
-//   different column width, but the HEIGHT is determined by YOUR photo's
-//   own aspect ratio — tall photos render tall, wide photos render wide.
-//   Mixing orientations here creates the "scattered editorial" effect.
-//   Pick your most visually striking shots for this grid.
+//   asymmetric grid at the top of the page. Pick your most visually striking.
 //
 // ARCHIVE ACCORDION
-//   All photos appear here, grouped by category. The accordion uses a
-//   CSS column (masonry) layout so images naturally stack at their true
-//   proportions — no cropping, no forced boxes.
+//   All photos appear here, grouped by category. Uses CSS column/masonry
+//   layout — no cropping, no forced boxes.
 //
 // EXPORT RECOMMENDATIONS
-//   Horizontal (landscape) photos → export at 3:2 or 16:9 aspect ratio,
-//     minimum 1600px on the long edge, e.g. 2400×1600 or 3200×1800.
-//   Vertical (portrait) photos   → export at 2:3 or 4:5 aspect ratio,
-//     minimum 1600px on the long edge, e.g. 1067×1600 or 1280×1600.
-//   Quality: save at 80–85% JPEG. Lightroom "Export for Web" preset works.
+//   Horizontal (landscape) → 3:2 or 16:9, min 1600px long edge
+//   Vertical (portrait)    → 2:3 or 4:5, min 1600px long edge
+//   Quality: JPEG 80–85%.
 //
-// FEATURE BANNER (the full-width B&W photo with quote overlay)
-//   This is a fixed-height banner (~65vh). Use a HORIZONTAL / LANDSCAPE photo
-//   here. Ideal aspect ratio: 16:9 or wider (3:1 panoramic works well too).
-//   The photo is displayed with background-size: cover and desaturated to B&W,
-//   so subject matter matters more than color — strong compositions, leading
-//   lines, or wide environmental shots work best.
-//   → Update the `featureBannerSrc` export below with your image path.
+// FEATURE BANNER (full-width section with quote overlay)
+//   Use a HORIZONTAL / LANDSCAPE photo. Ideal: 16:9 or wider.
+//   → Update `featureBannerSrc` below.
+//
+// VIDEO BACKGROUND (behind the quote / statement section)
+//   ⚠️  COMPRESS BEFORE USE. The video must be under ~8 MB for web.
+//   Use HandBrake: H.264 codec, 720p, CRF 28, MP4 container.
+//   Then replace `videoSrc` below with '/photography/your-compressed-video.mp4'.
+//   Until a compressed version is available, the poster image is shown instead.
+//   → Update `videoSrc` and `videoPosterSrc` below.
 //
 // FILE PATHS
 //   Drop your images in /public/photography/ and reference them as:
@@ -59,24 +55,33 @@ export interface PhotoCategory {
   description: string
 }
 
-// ─── Feature banner ───────────────────────────────────────────────────────────
-// Replace with your own wide/landscape image. See orientation notes above.
-export const featureBannerSrc =
-  'https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?w=1600&q=70'
+// ─── Video / banner sources ───────────────────────────────────────────────────
+
+// Video for the statement section background.
+// ⚠️  MUST be compressed to <8 MB before deploying. See notes above.
+// Set to empty string '' to disable video and show poster only.
+export const videoSrc = ''  // replace with '/photography/your-compressed-video.mp4'
+
+// Poster image — shown while video loads, and as fallback when video is disabled.
+// Using the lake-sunrise shot — strong horizontal composition, ideal for a banner.
+export const videoPosterSrc = '/photography/IMG_20250210_055251.jpg.jpeg'
+
+// Feature banner (full-width B&W section below the statement)
+export const featureBannerSrc = '/photography/IMG_20250210_055251.jpg.jpeg'
 
 // ─── Categories ──────────────────────────────────────────────────────────────
 export const photoCategories: PhotoCategory[] = [
+  {
+    id: 'nature',
+    label: 'Nature & Sky',
+    description:
+      'Sunsets, clouds, trees, and the slow drama of light changing — mostly shot on a phone, mostly unplanned.',
+  },
   {
     id: 'urban',
     label: 'Urban & Street',
     description:
       'Architecture, geometry, and the rhythm of city life — found in shadows, surfaces, and unposed moments.',
-  },
-  {
-    id: 'nature',
-    label: 'Nature & Landscape',
-    description:
-      'Light behaving honestly — golden hours, overcast skies, and the patience of wide-open spaces.',
   },
   {
     id: 'portrait',
@@ -93,128 +98,96 @@ export const photoCategories: PhotoCategory[] = [
 ]
 
 // ─── Photos ──────────────────────────────────────────────────────────────────
-// Unsplash placeholders — replace src with '/photography/your-file.jpg'
-// Mix of landscape and portrait intentionally to verify dynamic layout.
 export const photos: Photo[] = [
-  // Urban — mix of landscape and portrait
-  {
-    id: 'u1',
-    src: 'https://images.unsplash.com/photo-1486325212027-8081e485255e?w=800&q=80',
-    alt: 'Reflections on glass tower facades',
-    location: 'Kuala Lumpur',
-    year: '2024',
-    category: 'urban',
-    featured: true, // portrait orientation
-  },
-  {
-    id: 'u2',
-    src: 'https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=900&q=80',
-    alt: 'City skyline at dusk',
-    location: 'Penang',
-    year: '2024',
-    category: 'urban',
-    featured: true, // landscape orientation
-  },
-  {
-    id: 'u3',
-    src: 'https://images.unsplash.com/photo-1530305408560-82d13781b33a?w=700&q=80',
-    alt: 'Concrete staircase spiral',
-    location: 'Kuala Lumpur',
-    year: '2023',
-    category: 'urban',
-  },
-  {
-    id: 'u4',
-    src: 'https://images.unsplash.com/photo-1514565131-fce0801e6f04?w=800&q=80',
-    alt: 'Alley shadows and shopfronts',
-    location: 'George Town',
-    year: '2023',
-    category: 'urban',
-    featured: true, // portrait orientation
-  },
-  // Nature — mix of landscape and portrait
+
+  // ── Nature & Sky ────────────────────────────────────────────────────────────
+
+  // FEATURED — Lake city sunrise reflection: strongest composition, perfect symmetry.
+  // Wide landscape — ideal for the hero grid's wide slots.
   {
     id: 'n1',
-    src: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=900&q=80',
-    alt: 'Mountain ridge at golden hour',
-    location: 'Cameron Highlands',
-    year: '2024',
+    src: '/photography/IMG_20250210_055251.jpg.jpeg',
+    alt: 'Sunrise reflected perfectly on a still city lake',
+    location: 'India',
+    year: '2025',
     category: 'nature',
-    featured: true, // landscape orientation
+    featured: true,
   },
+
+  // FEATURED — Dramatic blue-gold storm clouds with treeline silhouette.
+  // Tall portrait — creates a strong vertical in the scattered grid.
   {
     id: 'n2',
-    src: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800&q=80',
-    alt: 'Forest path in morning light',
-    location: 'Pahang',
-    year: '2023',
+    src: '/photography/IMG-20250712-WA0082.jpg.jpeg',
+    alt: 'Storm clouds splitting into blue and gold over a treeline',
+    year: '2025',
     category: 'nature',
+    featured: true,
   },
+
+  // Sunset over water with building silhouettes — warm orange tones.
   {
     id: 'n3',
-    src: 'https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?w=800&q=80',
-    alt: 'Sunrise over water',
-    location: 'Terengganu',
-    year: '2024',
+    src: '/photography/IMG-20250712-WA0020.jpg.jpeg',
+    alt: 'Sunset reflected in rippling water, buildings silhouetted',
+    year: '2025',
     category: 'nature',
   },
+
+  // Pine tree silhouette against a fading dusk sky — tall portrait.
   {
     id: 'n4',
-    src: 'https://images.unsplash.com/photo-1418065460487-3e41a6c84dc5?w=700&q=80',
-    alt: 'Rain on leaves close-up',
-    location: 'Kuala Lumpur',
-    year: '2023',
+    src: '/photography/IMG-20250712-WA0022.jpg.jpeg',
+    alt: 'Conifer silhouette against a dusk sky with cloud streaks',
+    year: '2025',
     category: 'nature',
-    featured: true, // square-ish
   },
-  // Portrait
+
+  // Dramatic sunset cloud formation — portrait, dark purples and warm amber.
   {
-    id: 'p1',
-    src: 'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=700&q=80',
-    alt: 'Environmental portrait, window light',
-    location: 'Kuala Lumpur',
-    year: '2024',
-    category: 'portrait',
+    id: 'n5',
+    src: '/photography/IMG-20250712-WA0023.jpg.jpeg',
+    alt: 'Brooding sunset clouds — purples and amber over a treeline',
+    year: '2025',
+    category: 'nature',
   },
+
+  // Crescent moon framed by tree canopy — deep blue night sky.
   {
-    id: 'p2',
-    src: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=700&q=80',
-    alt: 'Candid street portrait',
-    location: 'Ipoh',
-    year: '2023',
-    category: 'portrait',
+    id: 'n6',
+    src: '/photography/IMG-20250712-WA0078.jpg.jpeg',
+    alt: 'Crescent moon framed by tropical tree canopy at dusk',
+    year: '2025',
+    category: 'nature',
   },
+
+  // Birds in flight through wispy clouds — square-ish, high contrast.
   {
-    id: 'p3',
-    src: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=700&q=80',
-    alt: 'Backlit silhouette portrait',
-    location: 'Kuala Lumpur',
-    year: '2024',
-    category: 'portrait',
+    id: 'n7',
+    src: '/photography/IMG_3056.JPG.jpeg',
+    alt: 'Two birds in flight through dramatic white cloud formations',
+    year: '2025',
+    category: 'nature',
   },
-  // Abstract
+
+  // ── Abstract & Texture ───────────────────────────────────────────────────────
+
+  // Yellow flower macro — vivid detail, clean subject, great colour pop.
   {
     id: 'a1',
-    src: 'https://images.unsplash.com/photo-1551376347-075b0121a65b?w=800&q=80',
-    alt: 'Concrete texture and shadow geometry',
-    location: 'KL',
-    year: '2024',
+    src: '/photography/IMG_0758.JPG.jpeg',
+    alt: 'Yellow daisy macro against dark leaves',
+    year: '2025',
     category: 'abstract',
+    featured: true,
   },
-  {
-    id: 'a2',
-    src: 'https://images.unsplash.com/photo-1519638831568-d9897f54ed69?w=900&q=80',
-    alt: 'Color field — peeling wall layers',
-    location: 'George Town',
-    year: '2023',
-    category: 'abstract',
-  },
-  {
-    id: 'a3',
-    src: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=700&q=80',
-    alt: 'Water surface refraction',
-    location: 'Kuala Lumpur',
-    year: '2024',
-    category: 'abstract',
-  },
+
+  // ── Placeholders for "photography bottom" folder ──────────────────────────
+  // Once you drop images into public/photography/ from the "photography bottom"
+  // folder, add entries here following the same pattern.
+  // Urban & Street examples:
+  // { id: 'u1', src: '/photography/your-urban-photo.jpg', alt: '...', year: '2025', category: 'urban' },
+  //
+  // Portrait examples:
+  // { id: 'p1', src: '/photography/your-portrait-photo.jpg', alt: '...', year: '2025', category: 'portrait' },
 ]
