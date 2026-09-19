@@ -188,74 +188,102 @@ function AccordionCategory({ cat, photoList, defaultOpen = false }: AccordionCat
   )
 }
 
-// ─── Full-width feature banner ────────────────────────────────────────────────
-// Use a LANDSCAPE / HORIZONTAL photo here. See photography.ts for guidance.
-// bg-size: cover + fixed height = the photo will be center-cropped to fill.
-// Ideal: 16:9 or wider (e.g. 3840×2160, 3840×1600, any wide panoramic).
+// ─── Merged Cinematic Video Statement & Feature Banner ───────────────────────
 
-function FullWidthBreak() {
-  const { ref, inView } = useInView(0.2)
+function MergedVideoSection() {
+  const { ref, inView } = useInView(0.15)
   const videoRef = useRef<HTMLVideoElement>(null)
 
   useEffect(() => {
-    if (videoRef.current) {
-      videoRef.current.muted = true
-      videoRef.current.play().catch(() => {})
-    }
+    const video = videoRef.current
+    if (!video) return
+    video.muted = true
+    video.defaultMuted = true
+    video.setAttribute('muted', '')
+    video.play().catch(() => { })
   }, [])
 
   return (
-    <div ref={ref} className="relative my-24 h-[65vh] w-full overflow-hidden">
-      {/* Video background — clearly visible with subtle contrast treatment */}
+    <div
+      ref={ref}
+      className="relative my-16 flex min-h-[65vh] w-full items-center justify-center overflow-hidden md:my-24 md:min-h-[72vh]"
+    >
+      {/* Background Video */}
       {videoSrc ? (
         <video
           ref={videoRef}
           className="absolute inset-0 h-full w-full object-cover"
-          src={videoSrc}
-          poster={featureBannerSrc}
+          poster={featureBannerSrc || videoPosterSrc}
           autoPlay
           muted
           loop
           playsInline
           preload="auto"
           aria-hidden
-        />
+          onCanPlay={(e) => {
+            e.currentTarget.play().catch(() => { })
+          }}
+        >
+          <source src={videoSrc} type="video/mp4" />
+        </video>
       ) : (
         <div
           className="absolute inset-0 bg-cover bg-center"
           style={{
-            backgroundImage: `url('${featureBannerSrc}')`,
-            transform: inView ? 'scale(1)' : 'scale(1.06)',
+            backgroundImage: `url('${featureBannerSrc || videoPosterSrc}')`,
+            transform: inView ? 'scale(1)' : 'scale(1.04)',
             transition: 'transform 1.4s cubic-bezier(0.22,1,0.36,1)',
           }}
         />
       )}
-      {/* Subtle translucent overlay — keeps background video clearly visible while preserving text legibility */}
+
+      {/* Subtle translucent overlay — ensures clear video visibility while preserving typography legibility */}
       <div
         className="absolute inset-0"
         style={{
           background:
-            'linear-gradient(to bottom, rgba(15,20,16,0.22), rgba(15,20,16,0.35))',
+            'linear-gradient(to bottom, rgba(15,20,16,0.22), rgba(15,20,16,0.38))',
         }}
       />
-      <div className="relative z-10 flex h-full flex-col items-center justify-center px-6 text-center">
+
+      {/* Merged Text Content */}
+      <div className="relative z-10 mx-auto flex max-w-4xl flex-col items-center justify-center px-6 py-20 text-center md:py-28">
         <motion.p
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-          className="max-w-xl font-serif text-3xl italic leading-relaxed text-phot-cream drop-shadow-[0_2px_14px_rgba(0,0,0,0.9)] md:text-4xl lg:text-5xl"
+          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+          className="max-w-2xl font-serif text-xl italic leading-relaxed text-phot-cream/90 drop-shadow-[0_2px_12px_rgba(0,0,0,0.9)] md:text-2xl lg:text-3xl"
+        >
+
+        </motion.p>
+
+        <div className="my-6 h-px w-16 bg-phot-cream/30" />
+
+        <motion.p
+          initial={{ opacity: 0, y: 25 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.9, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+          className="max-w-2xl font-serif text-3xl italic leading-relaxed text-phot-cream drop-shadow-[0_2px_16px_rgba(0,0,0,0.95)] md:text-4xl lg:text-5xl"
         >
           "Light is the only medium I haven't figured out yet."
         </motion.p>
+
         <motion.p
           initial={{ opacity: 0 }}
           animate={inView ? { opacity: 0.85 } : {}}
-          transition={{ duration: 0.9, delay: 0.3 }}
-          className="mt-5 font-mono text-[11px] tracking-[0.24em] text-phot-cream uppercase drop-shadow-[0_1px_8px_rgba(0,0,0,0.8)]"
+          transition={{ duration: 0.8, delay: 0.4 }}
+          className="mt-4 font-mono text-[11px] tracking-[0.24em] text-phot-cream uppercase drop-shadow-[0_1px_8px_rgba(0,0,0,0.85)]"
         >
           — ongoing
         </motion.p>
       </div>
+
+      {/* Reduced motion fallback */}
+      <style>{`
+        @media (prefers-reduced-motion: reduce) {
+          video { display: none !important; }
+        }
+      `}</style>
     </div>
   )
 }
@@ -325,66 +353,8 @@ export function Photography() {
         </div>
       </section>
 
-      {/* ── Statement — video background ── */}
-      <div className="relative overflow-hidden" style={{ minHeight: '38vh' }}>
-        {videoSrc ? (
-          <video
-            ref={(el) => {
-              if (el) {
-                el.muted = true
-                el.play().catch(() => {})
-              }
-            }}
-            className="absolute inset-0 h-full w-full object-cover"
-            src={videoSrc}
-            poster={videoPosterSrc}
-            autoPlay
-            muted
-            loop
-            playsInline
-            preload="auto"
-            aria-hidden
-          />
-        ) : (
-          // No video yet — show poster image as static background
-          <div
-            className="absolute inset-0 bg-cover bg-center"
-            style={{
-              backgroundImage: `url('${videoPosterSrc}')`,
-              filter: 'brightness(0.7)',
-            }}
-          />
-        )}
-
-        {/* Subtle translucent overlay — ensures clear video visibility while preserving text legibility */}
-        <div
-          className="absolute inset-0"
-          style={{ background: 'linear-gradient(to bottom, rgba(15,20,16,0.22), rgba(15,20,16,0.35))' }}
-        />
-
-        {/* Quote text */}
-        <div className="relative z-10 flex min-h-[38vh] flex-col items-center justify-center px-6 py-16 text-center">
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-60px' }}
-            transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-            className="max-w-2xl font-serif text-2xl italic leading-relaxed text-phot-cream drop-shadow-[0_2px_14px_rgba(0,0,0,0.9)] md:text-3xl lg:text-4xl"
-          >
-            Shot on a phone. Edited in Lightroom. No pretension.
-          </motion.p>
-        </div>
-
-        {/* Hide video for prefers-reduced-motion users via inline style tag */}
-        <style>{`
-          @media (prefers-reduced-motion: reduce) {
-            video { display: none !important; }
-          }
-        `}</style>
-      </div>
-
-      {/* ── Feature banner ── */}
-      <FullWidthBreak />
+      {/* ── Merged Cinematic Video Statement & Feature Banner ── */}
+      <MergedVideoSection />
 
       {/* ── Archive accordions ── */}
       <section className="mx-auto max-w-7xl px-6 pb-32 md:px-10 lg:px-20">
