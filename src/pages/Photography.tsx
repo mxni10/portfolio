@@ -39,43 +39,35 @@ function useInView(threshold = 0.15) {
 
 interface HeroPhotoProps {
   photo: Photo
-  colSpan: number  // 1 or 2
+  colSpan: number
   index: number
-  nudgeTop?: string // e.g. "2rem" or "-1rem" for asymmetric vertical offset
 }
 
-function HeroPhoto({ photo, colSpan, index, nudgeTop = '0rem' }: HeroPhotoProps) {
+function HeroPhoto({ photo, colSpan, index }: HeroPhotoProps) {
   const [loaded, setLoaded] = useState(false)
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 32, scale: 0.97 }}
+      initial={{ opacity: 0, y: 24, scale: 0.97 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
-      transition={{ duration: 0.9, delay: 0.11 * index, ease: [0.22, 1, 0.36, 1] }}
+      transition={{ duration: 0.9, delay: 0.1 * index, ease: [0.22, 1, 0.36, 1] }}
       className="group relative overflow-hidden rounded-sm"
       style={{
         gridColumn: `span ${colSpan}`,
-        marginTop: nudgeTop,
+        aspectRatio: '16 / 10',
       }}
     >
       {/* shimmer skeleton while loading */}
       {!loaded && (
-        <div
-          className="absolute inset-0 animate-pulse bg-[#1c2420]"
-          style={{ minHeight: '200px' }}
-        />
+        <div className="absolute inset-0 animate-pulse bg-[#1c2420]" />
       )}
-      {/*
-        KEY CHANGE: width 100%, height auto — image renders at ITS OWN aspect ratio.
-        No object-cover, no container forcing a fixed ratio.
-        A portrait photo will be tall; a landscape photo will be wide — both correct.
-      */}
+      {/* object-cover fills the fixed aspect-ratio container uniformly */}
       <img
         src={photo.src}
         alt={photo.alt}
-        loading="lazy"
+        loading="eager"
         onLoad={() => setLoaded(true)}
-        className="block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-[1.03]"
+        className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
         style={{ opacity: loaded ? 1 : 0 }}
       />
       {/* hover caption overlay — slides up from bottom */}
@@ -94,16 +86,13 @@ function HeroPhoto({ photo, colSpan, index, nudgeTop = '0rem' }: HeroPhotoProps)
   )
 }
 
-// Grid layout config for up to 5 featured photos.
-// colSpan: how many of 4 columns this photo occupies.
-// nudgeTop: vertical offset for the editorial scattered effect.
-// Orientation: ANY — each photo renders at its own natural ratio.
+// 3 equal columns, uniform height via aspect-ratio: 16/10 on each card.
 const HERO_LAYOUT = [
-  { colSpan: 1, nudgeTop: '0rem'   }, // photo 1 — any orientation
-  { colSpan: 2, nudgeTop: '3rem'   }, // photo 2 — landscape looks great here (wider)
-  { colSpan: 1, nudgeTop: '0.5rem' }, // photo 3 — any orientation
-  { colSpan: 1, nudgeTop: '-2rem'  }, // photo 4 — portrait looks great here (taller)
-  { colSpan: 3, nudgeTop: '1.5rem' }, // photo 5 — landscape looks great here (spans 3 cols)
+  { colSpan: 1 }, // left
+  { colSpan: 1 }, // middle
+  { colSpan: 1 }, // right
+  { colSpan: 1 }, // 4th (if used)
+  { colSpan: 1 }, // 5th (if used)
 ]
 
 // ─── Accordion masonry gallery ───────────────────────────────────────────────
@@ -296,15 +285,10 @@ export function Photography() {
             </motion.p>
           </div>
 
-          {/*
-            Asymmetric hero grid — 4 columns, auto rows.
-            Images render at THEIR OWN natural aspect ratio (no forced crop).
-            Portrait photos → tall cells. Landscape photos → shorter cells.
-            Vertical offsets (nudgeTop) on each card create the scattered look.
-          */}
+          {/* 3-column equal grid — all cards same 16:10 height via aspect-ratio */}
           <div
-            className="grid gap-3 items-start"
-            style={{ gridTemplateColumns: 'repeat(4, 1fr)' }}
+            className="grid gap-3"
+            style={{ gridTemplateColumns: 'repeat(3, 1fr)' }}
           >
             {featuredPhotos.map((photo, i) => {
               const layout = HERO_LAYOUT[i] ?? HERO_LAYOUT[0]
@@ -313,7 +297,6 @@ export function Photography() {
                   key={photo.id}
                   photo={photo}
                   colSpan={layout.colSpan}
-                  nudgeTop={layout.nudgeTop}
                   index={i}
                 />
               )

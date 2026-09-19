@@ -58,9 +58,8 @@ export interface PhotoCategory {
 // ─── Video / banner sources ───────────────────────────────────────────────────
 
 // Video for the statement section background.
-// ⚠️  MUST be compressed to <8 MB before deploying. See notes above.
-// Set to empty string '' to disable video and show poster only.
-export const videoSrc = ''  // replace with '/photography/your-compressed-video.mp4'
+// Set to '/photography/your-video.mp4' when you add a compressed video file to public/photography/
+export const videoSrc = ''
 
 // Poster image — shown while video loads, and as fallback when video is disabled.
 // Using the lake-sunrise shot — strong horizontal composition, ideal for a banner.
@@ -115,14 +114,14 @@ export const photos: Photo[] = [
   },
 
   // FEATURED — Dramatic blue-gold storm clouds with treeline silhouette.
-  // Tall portrait — creates a strong vertical in the scattered grid.
+  // Tall portrait — moved to archive, was too long in middle hero slot.
   {
     id: 'n2',
     src: '/photography/IMG-20250712-WA0082.jpg.jpeg',
     alt: 'Storm clouds splitting into blue and gold over a treeline',
     year: '2025',
     category: 'nature',
-    featured: true,
+    featured: false,
   },
 
   // Sunset over water with building silhouettes — warm orange tones.
@@ -161,13 +160,15 @@ export const photos: Photo[] = [
     category: 'nature',
   },
 
-  // Birds in flight through wispy clouds — square-ish, high contrast.
+  // FEATURED — Birds in flight through wispy clouds — landscape/square, high contrast.
+  // Wide orientation suits the colSpan-2 middle hero slot perfectly.
   {
     id: 'n7',
     src: '/photography/IMG_3056.JPG.jpeg',
     alt: 'Two birds in flight through dramatic white cloud formations',
     year: '2025',
     category: 'nature',
+    featured: true,
   },
 
   // ── Abstract & Texture ───────────────────────────────────────────────────────
