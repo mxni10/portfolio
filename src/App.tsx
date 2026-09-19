@@ -5,6 +5,7 @@ import { Navbar } from './components/Navbar'
 import { ScrollProgress } from './components/ScrollProgress'
 import { SmoothScroll } from './components/SmoothScroll'
 import { Home } from './pages/Home'
+import { Photography } from './pages/Photography'
 import { ProjectCase } from './pages/ProjectCase'
 
 export default function App() {
@@ -18,6 +19,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/work/:slug" element={<ProjectCase />} />
+        <Route path="/photography" element={<Photography />} />
       </Routes>
       <Footer />
     </BrowserRouter>

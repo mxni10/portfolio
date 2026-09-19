@@ -10,6 +10,24 @@
   --color-line: rgba(243, 239, 230, 0.12);
 }
 
+/* ─── Photography section palette ──────────────────────────────────────────── */
+:root {
+  --phot-bg: #141a16;        /* deep forest-green, almost black */
+  --phot-ink: #0f1410;       /* darkest, overlays */
+  --phot-cream: #f0ebe0;     /* warm off-white */
+  --phot-sage: #8a9b8e;      /* muted olive-sage */
+  --phot-olive: #4a6350;     /* mid-tone forest green */
+  --phot-line: rgba(240,235,224,0.10);
+}
+
+/* Tailwind-compatible utility classes for the photography palette */
+.text-phot-cream  { color: var(--phot-cream); }
+.text-phot-sage   { color: var(--phot-sage); }
+.text-phot-olive  { color: var(--phot-olive); }
+.bg-phot-ink      { background-color: var(--phot-ink); }
+.bg-phot-bg       { background-color: var(--phot-bg); }
+.border-phot-line { border-color: var(--phot-line); }
+
 html,
 body,
 #root {

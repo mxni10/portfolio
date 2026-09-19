@@ -71,6 +71,12 @@ export function Navbar() {
         </ul>
 
         <div className="hidden items-center gap-3 md:flex">
+          <Link
+            to="/photography"
+            className="font-serif text-[12px] italic text-mute underline underline-offset-4 transition-colors hover:text-paper"
+          >
+            Photography
+          </Link>
           <span className="flex items-center gap-2 rounded-full border border-accent/20 bg-accent/5 px-3 py-1 text-[10px] font-mono tracking-[0.18em] text-mute uppercase backdrop-blur-sm">
             <span className="relative flex h-2 w-2">
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-60" />
@@ -114,6 +120,20 @@ export function Navbar() {
                   {item.label}
                 </motion.a>
               ))}
+              <motion.div
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.05 * navItems.length, duration: 0.4 }}
+                className="pt-4"
+              >
+                <Link
+                  to="/photography"
+                  onClick={() => setOpen(false)}
+                  className="font-serif text-xl italic text-mute underline underline-offset-4 hover:text-paper transition-colors"
+                >
+                  Photography →
+                </Link>
+              </motion.div>
             </div>
           </motion.div>
         ) : null}
