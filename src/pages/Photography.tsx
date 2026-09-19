@@ -251,18 +251,8 @@ export function Photography() {
 
   return (
     <div className="min-h-screen" style={{ background: 'var(--phot-bg)' }}>
-      {/* ── Top bar: back link ── */}
-      <div className="fixed left-0 right-0 top-0 z-[70] flex items-center justify-between px-6 pt-6 pb-4 md:px-10">
-        <Link
-          to="/"
-          className="font-serif text-base italic text-phot-cream/60 underline underline-offset-4 transition-colors hover:text-phot-cream"
-        >
-          ← {profile.name}
-        </Link>
-        <span className="font-mono text-[10px] tracking-[0.22em] text-phot-sage uppercase opacity-60">
-          Photography
-        </span>
-      </div>
+
+
 
       {/* ── Hero ── */}
       <section className="relative px-6 pb-16 pt-28 md:px-10 md:pt-32 lg:px-20">
