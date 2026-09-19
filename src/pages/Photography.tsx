@@ -195,11 +195,21 @@ function AccordionCategory({ cat, photoList, defaultOpen = false }: AccordionCat
 
 function FullWidthBreak() {
   const { ref, inView } = useInView(0.2)
+  const videoRef = useRef<HTMLVideoElement>(null)
+
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.muted = true
+      videoRef.current.play().catch(() => {})
+    }
+  }, [])
+
   return (
     <div ref={ref} className="relative my-24 h-[65vh] w-full overflow-hidden">
-      {/* Video background — same clip as the statement section above */}
+      {/* Video background — clearly visible with subtle contrast treatment */}
       {videoSrc ? (
         <video
+          ref={videoRef}
           className="absolute inset-0 h-full w-full object-cover"
           src={videoSrc}
           poster={featureBannerSrc}
@@ -207,40 +217,41 @@ function FullWidthBreak() {
           muted
           loop
           playsInline
-          preload="none"
+          preload="auto"
           aria-hidden
-          style={{ filter: 'brightness(0.55)' }}
         />
       ) : (
         <div
           className="absolute inset-0 bg-cover bg-center"
           style={{
             backgroundImage: `url('${featureBannerSrc}')`,
-            filter: 'grayscale(100%) brightness(0.45)',
             transform: inView ? 'scale(1)' : 'scale(1.06)',
             transition: 'transform 1.4s cubic-bezier(0.22,1,0.36,1)',
           }}
         />
       )}
-      {/* Dark gradient overlay */}
+      {/* Subtle translucent overlay — keeps background video clearly visible while preserving text legibility */}
       <div
         className="absolute inset-0"
-        style={{ background: 'linear-gradient(to bottom, rgba(15,20,16,0.45), rgba(15,20,16,0.70))' }}
+        style={{
+          background:
+            'linear-gradient(to bottom, rgba(15,20,16,0.22), rgba(15,20,16,0.35))',
+        }}
       />
       <div className="relative z-10 flex h-full flex-col items-center justify-center px-6 text-center">
         <motion.p
           initial={{ opacity: 0, y: 30 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-          className="max-w-xl font-serif text-3xl italic leading-relaxed text-phot-cream md:text-4xl lg:text-5xl"
+          className="max-w-xl font-serif text-3xl italic leading-relaxed text-phot-cream drop-shadow-[0_2px_14px_rgba(0,0,0,0.9)] md:text-4xl lg:text-5xl"
         >
           "Light is the only medium I haven't figured out yet."
         </motion.p>
         <motion.p
           initial={{ opacity: 0 }}
-          animate={inView ? { opacity: 0.55 } : {}}
+          animate={inView ? { opacity: 0.85 } : {}}
           transition={{ duration: 0.9, delay: 0.3 }}
-          className="mt-5 font-mono text-[11px] tracking-[0.24em] text-phot-cream uppercase"
+          className="mt-5 font-mono text-[11px] tracking-[0.24em] text-phot-cream uppercase drop-shadow-[0_1px_8px_rgba(0,0,0,0.8)]"
         >
           — ongoing
         </motion.p>
@@ -316,19 +327,14 @@ export function Photography() {
 
       {/* ── Statement — video background ── */}
       <div className="relative overflow-hidden" style={{ minHeight: '38vh' }}>
-        {/*
-          Video background — autoplay, muted, loop, playsInline.
-          When videoSrc is empty or prefers-reduced-motion is active,
-          only the poster image shows. The dark overlay ensures text
-          stays readable regardless of video content.
-
-          Mobile / slow connection strategy: the video uses `preload="none"`
-          so it doesn't load until the browser decides to — browsers on
-          data-saver mode will typically not autoplay anyway. The poster
-          image loads as a normal img and is always visible first.
-        */}
         {videoSrc ? (
           <video
+            ref={(el) => {
+              if (el) {
+                el.muted = true
+                el.play().catch(() => {})
+              }
+            }}
             className="absolute inset-0 h-full w-full object-cover"
             src={videoSrc}
             poster={videoPosterSrc}
@@ -336,12 +342,8 @@ export function Photography() {
             muted
             loop
             playsInline
-            preload="none"
+            preload="auto"
             aria-hidden
-            style={{
-              // Respect prefers-reduced-motion: CSS media query hides the video
-              // and shows only the poster via the .motion-safe utility below
-            }}
           />
         ) : (
           // No video yet — show poster image as static background
@@ -349,15 +351,15 @@ export function Photography() {
             className="absolute inset-0 bg-cover bg-center"
             style={{
               backgroundImage: `url('${videoPosterSrc}')`,
-              filter: 'brightness(0.55)',
+              filter: 'brightness(0.7)',
             }}
           />
         )}
 
-        {/* Dark semi-transparent overlay — ensures quote readability */}
+        {/* Subtle translucent overlay — ensures clear video visibility while preserving text legibility */}
         <div
           className="absolute inset-0"
-          style={{ background: 'linear-gradient(to bottom, rgba(15,20,16,0.55), rgba(15,20,16,0.72))' }}
+          style={{ background: 'linear-gradient(to bottom, rgba(15,20,16,0.22), rgba(15,20,16,0.35))' }}
         />
 
         {/* Quote text */}
@@ -367,7 +369,7 @@ export function Photography() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-60px' }}
             transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-            className="max-w-2xl font-serif text-2xl italic leading-relaxed text-phot-cream md:text-3xl lg:text-4xl"
+            className="max-w-2xl font-serif text-2xl italic leading-relaxed text-phot-cream drop-shadow-[0_2px_14px_rgba(0,0,0,0.9)] md:text-3xl lg:text-4xl"
           >
             Shot on a phone. Edited in Lightroom. No pretension.
           </motion.p>
