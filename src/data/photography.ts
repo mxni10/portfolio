@@ -171,6 +171,16 @@ export const photos: Photo[] = [
     featured: true,
   },
 
+  // Shoreline waves at night with character art sketch.
+  {
+    id: 'n8',
+    src: '/photography/IMG_3374.JPG.jpeg',
+    alt: 'Night shoreline waves with hand-drawn art, beach at dusk',
+    location: 'Shoreline',
+    year: '2025',
+    category: 'nature',
+  },
+
   // ── Abstract & Texture ───────────────────────────────────────────────────────
 
   // Yellow flower macro — vivid detail, clean subject, great colour pop.

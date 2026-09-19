@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from 'framer-motion'
-import { ChevronDown, MapPin } from 'lucide-react'
+import { ChevronDown, MapPin, X } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import {
@@ -34,16 +34,15 @@ function useInView(threshold = 0.15) {
 }
 
 // ─── Hero photo card ─────────────────────────────────────────────────────────
-// No forced aspect ratio — the image renders at its natural dimensions.
-// The grid column/span controls horizontal placement; height is intrinsic.
 
 interface HeroPhotoProps {
   photo: Photo
   colSpan: number
   index: number
+  onSelect?: (photo: Photo) => void
 }
 
-function HeroPhoto({ photo, colSpan, index }: HeroPhotoProps) {
+function HeroPhoto({ photo, colSpan, index, onSelect }: HeroPhotoProps) {
   const [loaded, setLoaded] = useState(false)
 
   return (
@@ -51,7 +50,8 @@ function HeroPhoto({ photo, colSpan, index }: HeroPhotoProps) {
       initial={{ opacity: 0, y: 24, scale: 0.97 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
       transition={{ duration: 0.9, delay: 0.1 * index, ease: [0.22, 1, 0.36, 1] }}
-      className="group relative overflow-hidden rounded-sm"
+      onClick={() => onSelect?.(photo)}
+      className="group relative cursor-pointer overflow-hidden rounded-sm"
       style={{
         gridColumn: `span ${colSpan}`,
         aspectRatio: '16 / 10',
@@ -86,38 +86,48 @@ function HeroPhoto({ photo, colSpan, index }: HeroPhotoProps) {
   )
 }
 
+// ─── Accordion uniform gallery ───────────────────────────────────────────────
+// Uses a balanced responsive CSS grid (4 columns on desktop, 2 on tablet, 1 on mobile).
+// Cards maintain an elegant 4:5 ratio so all rows and columns align neatly with no empty voids.
 
-
-// ─── Accordion masonry gallery ───────────────────────────────────────────────
-// Uses CSS `columns` (masonry-style) so images sit at their NATURAL dimensions.
-// No fixed container ratio, no object-cover cropping.
-
-interface MasonryPhotoProps {
+interface GalleryPhotoProps {
   photo: Photo
   index: number
+  onSelect?: (photo: Photo) => void
 }
 
-function MasonryPhoto({ photo, index }: MasonryPhotoProps) {
+function GalleryPhotoCard({ photo, index, onSelect }: GalleryPhotoProps) {
+  const [loaded, setLoaded] = useState(false)
+
   return (
     <motion.div
       key={photo.id}
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay: index * 0.06, ease: [0.22, 1, 0.36, 1] }}
-      className="group relative mb-3 break-inside-avoid overflow-hidden rounded-sm"
+      transition={{ duration: 0.5, delay: index * 0.05, ease: [0.22, 1, 0.36, 1] }}
+      onClick={() => onSelect?.(photo)}
+      className="group relative aspect-[4/5] w-full cursor-pointer overflow-hidden rounded-sm bg-[#161c18]"
     >
+      {/* shimmer skeleton while loading */}
+      {!loaded && (
+        <div className="absolute inset-0 animate-pulse bg-[#1c2420]" />
+      )}
       <img
         src={photo.src}
         alt={photo.alt}
         loading="lazy"
-        className="block w-full h-auto transition-transform duration-500 group-hover:scale-[1.025]"
+        onLoad={() => setLoaded(true)}
+        className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.05]"
+        style={{ opacity: loaded ? 1 : 0 }}
       />
       {/* hover overlay */}
-      <div className="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-phot-ink/75 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100 p-3">
-        <p className="font-serif text-[11px] italic text-phot-cream/90 leading-snug">{photo.alt}</p>
+      <div className="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-phot-ink/85 via-phot-ink/20 to-transparent p-3.5 opacity-100 md:opacity-0 md:transition-opacity md:duration-300 md:group-hover:opacity-100">
+        <p className="font-serif text-[12px] italic text-phot-cream/95 leading-snug drop-shadow-sm">
+          {photo.alt}
+        </p>
         {photo.location && (
-          <p className="mt-0.5 flex items-center gap-1 font-mono text-[9px] tracking-[0.16em] text-phot-sage uppercase">
-            <MapPin size={8} /> {photo.location}
+          <p className="mt-1 flex items-center gap-1 font-mono text-[9px] tracking-[0.16em] text-phot-sage uppercase">
+            <MapPin size={8} /> {photo.location} · {photo.year}
           </p>
         )}
       </div>
@@ -129,9 +139,10 @@ interface AccordionCatProps {
   cat: PhotoCategory
   photoList: Photo[]
   defaultOpen?: boolean
+  onSelectPhoto?: (photo: Photo) => void
 }
 
-function AccordionCategory({ cat, photoList, defaultOpen = false }: AccordionCatProps) {
+function AccordionCategory({ cat, photoList, defaultOpen = false, onSelectPhoto }: AccordionCatProps) {
   const [open, setOpen] = useState(defaultOpen)
 
   return (
@@ -162,7 +173,7 @@ function AccordionCategory({ cat, photoList, defaultOpen = false }: AccordionCat
       <AnimatePresence initial={false}>
         {open && (
           <motion.div
-            id={`cat-panel-${cat.id}`}
+            id={`cat-${cat.id}`}
             role="region"
             aria-labelledby={`cat-${cat.id}`}
             initial={{ height: 0, opacity: 0 }}
@@ -171,14 +182,15 @@ function AccordionCategory({ cat, photoList, defaultOpen = false }: AccordionCat
             transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
             className="overflow-hidden"
           >
-            {/*
-              CSS columns (masonry) layout — images stack at their natural heights.
-              Portrait photos naturally take more vertical space; landscape photos less.
-              No cropping, no forced boxes. Gap is handled by mb-3 on each item.
-            */}
-            <div className="columns-1 gap-3 pb-8 sm:columns-2 md:columns-3 lg:columns-4">
+            {/* Balanced responsive grid: aligns rows and columns symmetrically without empty gaps */}
+            <div className="grid grid-cols-1 gap-3 pb-8 sm:grid-cols-2 lg:grid-cols-4">
               {photoList.map((photo, i) => (
-                <MasonryPhoto key={photo.id} photo={photo} index={i} />
+                <GalleryPhotoCard
+                  key={photo.id}
+                  photo={photo}
+                  index={i}
+                  onSelect={onSelectPhoto}
+                />
               ))}
             </div>
           </motion.div>
@@ -292,6 +304,7 @@ function MergedVideoSection() {
 // ─── Page ────────────────────────────────────────────────────────────────────
 
 export function Photography() {
+  const [lightboxPhoto, setLightboxPhoto] = useState<Photo | null>(null)
   const featuredPhotos = photos.filter((p) => p.featured).slice(0, 5)
 
   return (
@@ -347,6 +360,7 @@ export function Photography() {
                 photo={photo}
                 colSpan={1}
                 index={i}
+                onSelect={setLightboxPhoto}
               />
             ))}
           </div>
@@ -385,11 +399,54 @@ export function Photography() {
                 cat={cat}
                 photoList={catPhotos}
                 defaultOpen={i === 0}
+                onSelectPhoto={setLightboxPhoto}
               />
             </motion.div>
           )
         })}
       </section>
+
+      {/* ── Lightbox Modal ── */}
+      <AnimatePresence>
+        {lightboxPhoto && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            onClick={() => setLightboxPhoto(null)}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4 backdrop-blur-md"
+          >
+            <button
+              onClick={() => setLightboxPhoto(null)}
+              aria-label="Close image preview"
+              className="absolute right-5 top-5 rounded-full bg-white/10 p-2.5 text-phot-cream transition hover:bg-white/20"
+            >
+              <X size={22} />
+            </button>
+            <div
+              onClick={(e) => e.stopPropagation()}
+              className="relative max-h-[90vh] max-w-5xl text-center"
+            >
+              <img
+                src={lightboxPhoto.src}
+                alt={lightboxPhoto.alt}
+                className="max-h-[78vh] w-auto max-w-full rounded-sm object-contain shadow-2xl mx-auto"
+              />
+              <div className="mt-3">
+                <p className="font-serif text-base italic text-phot-cream">
+                  {lightboxPhoto.alt}
+                </p>
+                {lightboxPhoto.location && (
+                  <p className="mt-1 font-mono text-[10px] tracking-[0.2em] text-phot-sage uppercase">
+                    {lightboxPhoto.location} · {lightboxPhoto.year}
+                  </p>
+                )}
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* ── Footer ── */}
       <div className="border-t border-phot-line py-10 text-center">
