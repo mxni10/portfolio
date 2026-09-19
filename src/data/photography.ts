@@ -58,8 +58,8 @@ export interface PhotoCategory {
 // ─── Video / banner sources ───────────────────────────────────────────────────
 
 // Video for the statement section background.
-// Set to '/photography/your-video.mp4' when you add a compressed video file to public/photography/
-export const videoSrc = ''
+// lv_0_20260705000444.mp4 — 20 MB, confirmed on disk, also used for FullWidthBreak.
+export const videoSrc = '/photography/lv_0_20260705000444.mp4'
 
 // Poster image — shown while video loads, and as fallback when video is disabled.
 // Using the lake-sunrise shot — strong horizontal composition, ideal for a banner.

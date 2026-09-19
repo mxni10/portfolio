@@ -204,14 +204,35 @@ function FullWidthBreak() {
   const { ref, inView } = useInView(0.2)
   return (
     <div ref={ref} className="relative my-24 h-[65vh] w-full overflow-hidden">
+      {/* Video background — same clip as the statement section above */}
+      {videoSrc ? (
+        <video
+          className="absolute inset-0 h-full w-full object-cover"
+          src={videoSrc}
+          poster={featureBannerSrc}
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="none"
+          aria-hidden
+          style={{ filter: 'brightness(0.55)' }}
+        />
+      ) : (
+        <div
+          className="absolute inset-0 bg-cover bg-center"
+          style={{
+            backgroundImage: `url('${featureBannerSrc}')`,
+            filter: 'grayscale(100%) brightness(0.45)',
+            transform: inView ? 'scale(1)' : 'scale(1.06)',
+            transition: 'transform 1.4s cubic-bezier(0.22,1,0.36,1)',
+          }}
+        />
+      )}
+      {/* Dark gradient overlay */}
       <div
-        className="absolute inset-0 bg-cover bg-center"
-        style={{
-          backgroundImage: `url('${featureBannerSrc}')`,
-          filter: 'grayscale(100%) brightness(0.45)',
-          transform: inView ? 'scale(1)' : 'scale(1.06)',
-          transition: 'transform 1.4s cubic-bezier(0.22,1,0.36,1)',
-        }}
+        className="absolute inset-0"
+        style={{ background: 'linear-gradient(to bottom, rgba(15,20,16,0.45), rgba(15,20,16,0.70))' }}
       />
       <div className="relative z-10 flex h-full flex-col items-center justify-center px-6 text-center">
         <motion.p
@@ -234,6 +255,7 @@ function FullWidthBreak() {
     </div>
   )
 }
+
 
 // ─── Page ────────────────────────────────────────────────────────────────────
 
