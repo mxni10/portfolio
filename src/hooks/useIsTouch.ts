@@ -4,7 +4,7 @@ export function useIsTouch() {
   const [touch, setTouch] = useState(false)
 
   useEffect(() => {
-    const mq = window.matchMedia('(hover: none), (pointer: coarse)')
+    const mq = window.matchMedia('(hover: none) and (pointer: coarse)')
     const update = () => setTouch(mq.matches)
     update()
     mq.addEventListener('change', update)

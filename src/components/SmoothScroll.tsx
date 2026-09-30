@@ -46,15 +46,38 @@ export function SmoothScroll() {
 
   // Route change handling: reset scroll and refresh ScrollTrigger triggers
   useEffect(() => {
-    if (lenisRef.current) {
-      if (!location.hash) {
-        lenisRef.current.scrollTo(0, { immediate: true })
-      }
-      // Allow DOM to settle, then refresh ScrollTrigger positions
-      const timeout = setTimeout(() => {
-        ScrollTrigger.refresh()
-      }, 100)
-      return () => clearTimeout(timeout)
+    if (lenisRef.current && !location.hash) {
+      lenisRef.current.scrollTo(0, { immediate: true })
+    }
+
+    const refresh = () => {
+      ScrollTrigger.refresh()
+    }
+
+    // Refresh at staggered intervals to catch fast and slow layout shifts
+    const t1 = setTimeout(refresh, 100)
+    const t2 = setTimeout(refresh, 400)
+    const t3 = setTimeout(refresh, 1200)
+
+    // Refresh when web fonts finish downloading
+    document.fonts?.ready?.then(refresh)
+
+    // Observe body height changes caused by async Supabase data or image loads
+    let ro: ResizeObserver | null = null
+    if (typeof ResizeObserver !== 'undefined') {
+      let timeoutId: ReturnType<typeof setTimeout>
+      ro = new ResizeObserver(() => {
+        clearTimeout(timeoutId)
+        timeoutId = setTimeout(refresh, 100)
+      })
+      ro.observe(document.body)
+    }
+
+    return () => {
+      clearTimeout(t1)
+      clearTimeout(t2)
+      clearTimeout(t3)
+      ro?.disconnect()
     }
   }, [location.pathname, location.hash])
 

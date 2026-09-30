@@ -29,87 +29,89 @@ export function CinematicProjectCard({ project, index }: Props) {
   const reverse = index % 2 === 1
 
   useEffect(() => {
-    if (reducedMotion || isTouch || !containerRef.current || !frameRef.current || !innerRef.current) {
+    if (reducedMotion || !containerRef.current || !frameRef.current || !innerRef.current) {
       return
     }
 
     const ctx = gsap.context(() => {
-      // 1. Cinematic Frame Reveal: starts narrowed via clip-path, unveils wide as you scroll into it
-      const tlEnter = gsap.timeline({
-        scrollTrigger: {
-          trigger: containerRef.current,
-          start: 'top 85%',
-          end: 'top 28%',
-          scrub: 1.2,
-        },
-      })
-
-      tlEnter.fromTo(
-        frameRef.current,
-        {
-          clipPath: 'inset(18% 12% 18% 12% round 2.5rem)',
-          scale: 0.92,
-        },
-        {
-          clipPath: 'inset(0% 0% 0% 0% round 1.6rem)',
-          scale: 1,
-          ease: 'power2.out',
-        }
-      )
-
-      tlEnter.fromTo(
-        innerRef.current,
-        {
-          scale: 1.18,
-          filter: 'brightness(0.82)',
-        },
-        {
-          scale: 1,
-          filter: 'brightness(1)',
-          ease: 'power2.out',
-        },
-        0
-      )
-
-      // 2. Subtle Parallax Expansion as visitor continues scrolling through centerpiece
-      gsap.fromTo(
-        frameRef.current,
-        { scale: 1 },
-        {
-          scale: 1.025,
-          ease: 'none',
+      if (!isTouch) {
+        // 1. Cinematic Frame Reveal: starts narrowed via clip-path, unveils wide as you scroll into it
+        const tlEnter = gsap.timeline({
           scrollTrigger: {
             trigger: containerRef.current,
-            start: 'top 28%',
-            end: 'bottom 60%',
-            scrub: 1,
-          },
-        }
-      )
-
-      // 3. Cinematic Exit Collapse: visual contracts/closes via clip-path into next project scene
-      gsap.fromTo(
-        frameRef.current,
-        {
-          clipPath: 'inset(0% 0% 0% 0% round 1.6rem)',
-          scale: 1.025,
-          opacity: 1,
-        },
-        {
-          clipPath: 'inset(14% 8% 16% 8% round 2.4rem)',
-          scale: 0.94,
-          opacity: 0.65,
-          ease: 'power1.in',
-          scrollTrigger: {
-            trigger: containerRef.current,
-            start: 'bottom 45%',
-            end: 'bottom 5%',
+            start: 'top 85%',
+            end: 'top 28%',
             scrub: 1.2,
           },
-        }
-      )
+        })
 
-      // 4. Staggered Narrative Elements Entrance
+        tlEnter.fromTo(
+          frameRef.current,
+          {
+            clipPath: 'inset(18% 12% 18% 12% round 2.5rem)',
+            scale: 0.92,
+          },
+          {
+            clipPath: 'inset(0% 0% 0% 0% round 1.6rem)',
+            scale: 1,
+            ease: 'power2.out',
+          }
+        )
+
+        tlEnter.fromTo(
+          innerRef.current,
+          {
+            scale: 1.18,
+            filter: 'brightness(0.82)',
+          },
+          {
+            scale: 1,
+            filter: 'brightness(1)',
+            ease: 'power2.out',
+          },
+          0
+        )
+
+        // 2. Subtle Parallax Expansion as visitor continues scrolling through centerpiece
+        gsap.fromTo(
+          frameRef.current,
+          { scale: 1 },
+          {
+            scale: 1.025,
+            ease: 'none',
+            scrollTrigger: {
+              trigger: containerRef.current,
+              start: 'top 28%',
+              end: 'bottom 60%',
+              scrub: 1,
+            },
+          }
+        )
+
+        // 3. Cinematic Exit Collapse: visual contracts/closes via clip-path into next project scene
+        gsap.fromTo(
+          frameRef.current,
+          {
+            clipPath: 'inset(0% 0% 0% 0% round 1.6rem)',
+            scale: 1.025,
+            opacity: 1,
+          },
+          {
+            clipPath: 'inset(14% 8% 16% 8% round 2.4rem)',
+            scale: 0.94,
+            opacity: 0.65,
+            ease: 'power1.in',
+            scrollTrigger: {
+              trigger: containerRef.current,
+              start: 'bottom 45%',
+              end: 'bottom 5%',
+              scrub: 1.2,
+            },
+          }
+        )
+      }
+
+      // 4. Staggered Narrative Elements Entrance (runs across all devices)
       if (badgeRef.current) {
         gsap.fromTo(
           badgeRef.current,
@@ -121,7 +123,7 @@ export function CinematicProjectCard({ project, index }: Props) {
             ease: 'power3.out',
             scrollTrigger: {
               trigger: containerRef.current,
-              start: 'top 78%',
+              start: 'top 82%',
             },
           }
         )
@@ -138,7 +140,7 @@ export function CinematicProjectCard({ project, index }: Props) {
             ease: 'power3.out',
             scrollTrigger: {
               trigger: containerRef.current,
-              start: 'top 74%',
+              start: 'top 78%',
             },
           }
         )
@@ -155,7 +157,7 @@ export function CinematicProjectCard({ project, index }: Props) {
             ease: 'power3.out',
             scrollTrigger: {
               trigger: containerRef.current,
-              start: 'top 70%',
+              start: 'top 74%',
             },
           }
         )
@@ -172,7 +174,7 @@ export function CinematicProjectCard({ project, index }: Props) {
             ease: 'power3.out',
             scrollTrigger: {
               trigger: containerRef.current,
-              start: 'top 66%',
+              start: 'top 70%',
             },
           }
         )

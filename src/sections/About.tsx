@@ -16,13 +16,13 @@ export function About() {
   const isTouch = useIsTouch()
 
   useEffect(() => {
-    if (reduced || isTouch || !statementRef.current || !containerRef.current) return
+    if (reduced || !statementRef.current || !containerRef.current) return
 
     const ctx = gsap.context(() => {
       // Subtle scroll scrub illumination on the statement text
       gsap.fromTo(
         statementRef.current,
-        { opacity: 0.4, y: 30 },
+        { opacity: isTouch ? 0.7 : 0.4, y: isTouch ? 16 : 30 },
         {
           opacity: 1,
           y: 0,
@@ -30,9 +30,9 @@ export function About() {
           ease: 'power2.out',
           scrollTrigger: {
             trigger: statementRef.current,
-            start: 'top 80%',
+            start: 'top 85%',
             end: 'top 45%',
-            scrub: 1,
+            scrub: isTouch ? false : 1,
           },
         }
       )

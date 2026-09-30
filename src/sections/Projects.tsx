@@ -1,3 +1,5 @@
+import { useEffect } from 'react'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { SectionLabel } from '../components/SectionLabel'
 import { TitleReveal } from '../components/TitleReveal'
 import { CinematicProjectCard } from '../components/CinematicProjectCard'
@@ -5,6 +7,15 @@ import { useProjects } from '../hooks/useSupabaseData'
 
 export function Projects() {
   const { projects, loading } = useProjects()
+
+  useEffect(() => {
+    if (!loading) {
+      const id = setTimeout(() => {
+        ScrollTrigger.refresh()
+      }, 50)
+      return () => clearTimeout(id)
+    }
+  }, [loading])
 
   return (
     <section id="projects" className="relative px-6 py-28 md:px-10 md:py-40">
